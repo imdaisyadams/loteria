@@ -11,6 +11,7 @@ rand = "0.8.5"
 yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
 gloo = "0.3.0"
 gloo-timers = "0.2"
+web-sys = "0.3.70"
 
 [[bin]]
 name = "loteria"

@@ -74,6 +74,6 @@ pub fn create_deck() -> VecDeque<Card> {
         })
         .collect();
 
-    return deck
+    deck
 
 }
