@@ -63,13 +63,13 @@ pub fn create_deck() -> VecDeque<Card> {
         ("El Arpa", "arpa"),
         ("La Rana", "rana"),
     ];
-
+    
     let deck: VecDeque<Card> = cards.iter()
-        .map(|&(name, id)| {
+        .map(|&(name, img)| {
             Card {
                 name: name.to_string(),
                 // create image URL string
-                image: format!("/imgs/{}.jpg", id),
+                image: format!("imgs/{}.jpg", img),
             }
         })
         .collect();

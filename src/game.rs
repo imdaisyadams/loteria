@@ -37,7 +37,7 @@ impl Component for Game {
 
     fn create(_ctx: &Context<Self>) -> Self {
         let mut deck = create_deck();
-        let display_duration = 10;
+        let display_duration = 5;
         deck.make_contiguous().shuffle(&mut thread_rng());
         Self { 
             current_card: None, 
@@ -106,32 +106,37 @@ impl Component for Game {
     fn view(&self, ctx: &Context<Self>) -> Html {
         let link = ctx.link();
         html!{
-            <div>
-                <h1>{ "Card Game" }</h1>
-                <div>
-                    <button onclick={link.callback(|_| Msg::Start)} disabled={self.is_running}>
+            <>
+            <div class="container text-center">
+                <div class="col p-3">
+                    // title
+                    <h1>{ "¿Juguemos Loteria?" }</h1>
+
+                    // render card
+                    <h2>{ "Current Card" }</h2>
+                    { self.render_card() }
+                    <p> { self.remaining_time } </p>
+
+                    // play buttons
+                    <button type="button" class="btn btn-primary m-1" onclick={link.callback(|_| Msg::Start)} disabled={self.is_running}>
                         { "Start" }
                     </button>
-                    <button onclick={link.callback(|_| Msg::Cancel)}>
+                    <button type="button" class="btn btn-danger m-1" onclick={link.callback(|_| Msg::Cancel)}>
                         { "End" }
                     </button>
                     if self.is_running {
-                        <button onclick={link.callback(|_| Msg::Pause)}>
+                        <button type="button" class="btn btn-warning m-1" onclick={link.callback(|_| Msg::Pause)}>
                             { "Pause" }
                         </button>
                         // If game is not running and there is a current card show resume button
                     } else if self.current_card.is_some() {
-                        <button onclick={link.callback(|_| Msg::Resume)}>
+                        <button type="button" class="btn btn-warning m-1" onclick={link.callback(|_| Msg::Resume)}>
                             { "Resume" }
                         </button>
                     }
                 </div>
-                <div>
-                    <h2>{ "Current Card" }</h2>
-                    { self.render_card() }
-                    <p> { self.remaining_time } </p>
-                </div>
-
+            </div>
+            <div class="container text-left">
                 <div class="prize-list">
                     <h2>{ "Prizes" }</h2>
                     { for self.winners.iter().enumerate().map(|(index, prize)| {
@@ -153,6 +158,7 @@ impl Component for Game {
                     }) }
                 </div>
             </div>
+            </>
         }
     }
 }
@@ -178,6 +184,10 @@ impl Game {
                     <div>
                         <p>{ &card.name }</p>
                         <img src={card.image.clone()} alt={card.name.clone()} />
+
+                        <p> {"test image"} </p>
+                        <img src="imgs/gallo.jpg" alt="test img" />
+                        <img src="https://www.w3schools.com/images/w3schools_green.jpg" alt="W3Schools.com" />
                     </div>
                 }
             }
