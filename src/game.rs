@@ -180,14 +180,28 @@ impl Game {
     fn render_card(&self) -> Html {
         match &self.current_card {
             Some(card) => {
+                let img_src = format!("{}", card.image);
+                
+                // Log the image URL
+                web_sys::console::log_1(&format!("Attempting to load image from: {}", img_src).into());
+                
                 html! {
                     <div>
-                        <p>{ &card.name }</p>
-                        <img src={card.image.clone()} alt={card.name.clone()} />
-
-                        <p> {"test image"} </p>
-                        <img src="imgs/gallo.jpg" alt="test img" />
-                        <img src="https://www.w3schools.com/images/w3schools_green.jpg" alt="W3Schools.com" />
+                        <p>{ "Card Name: " }{ &card.name }</p>
+                        <p>{ "Image Source: " }{ &img_src }</p>
+                        
+                        <img 
+                            src={img_src.clone()} 
+                            alt={card.name.clone()}
+                            style="border: 2px solid red; min-width: 100px; min-height: 100px;"
+                            onload={Callback::from(|_| {
+                                web_sys::console::log_1(&"Image loaded successfully".into());
+                            })}
+                            onerror={Callback::from(move |_| {
+                                web_sys::console::error_1(&format!("Failed to load image: {}", img_src).into());
+                            })}
+                        />
+                        
                     </div>
                 }
             }
