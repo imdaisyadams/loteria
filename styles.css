@@ -1,0 +1,42 @@
+html, body {
+    background-color: #003F88 !important;
+}
+
+.buttons {
+    padding: 3%;
+    padding-left: 20%;
+    padding-right: 20%;
+    width: 70%;
+    text-align: center !important;
+}
+
+.header-row {
+    margin-top: 1% !important;
+    margin-left: -5% !important;
+}
+
+.cards-section {
+    margin-left: 15%;
+    margin-right: 10%;
+    margin-top: -5% !important;
+}
+
+.rendered-card {
+    border-radius: 20px;
+    width: 70%; 
+    height: 50%;
+}
+
+.prize-list {
+    margin-top: 10%;
+    color: white;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.prize {
+    font-size: 1.9vw;
+}
+
+
+
+

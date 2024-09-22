@@ -47,10 +47,10 @@ impl Component for Game {
             display_duration,
             remaining_time: display_duration,
             winners: vec![
-                Winner { prize: "Four Corners".to_string(), name: String::new() },
-                Winner { prize: "Diagonal".to_string(), name: String::new() },
-                Winner { prize: "Row".to_string(), name: String::new() },
-                Winner { prize: "Column".to_string(), name: String::new() },
+                Winner { prize: "Cuatro Esquinas".to_string(), name: String::new() },
+                Winner { prize: "Chorro".to_string(), name: String::new() },
+                Winner { prize: "Centro".to_string(), name: String::new() },
+                Winner { prize: "¡Loteria!".to_string(), name: String::new() },
             ],
          }
     }
@@ -107,55 +107,77 @@ impl Component for Game {
         let link = ctx.link();
         html!{
             <>
-            <div class="container text-center">
-                <div class="col p-3">
-                    // title
-                    <h1>{ "¿Juguemos Loteria?" }</h1>
-
-                    // render card
-                    <h2>{ "Current Card" }</h2>
-                    { self.render_card() }
-                    <p> { self.remaining_time } </p>
-
-                    // play buttons
-                    <button type="button" class="btn btn-primary m-1" onclick={link.callback(|_| Msg::Start)} disabled={self.is_running}>
-                        { "Start" }
-                    </button>
-                    <button type="button" class="btn btn-danger m-1" onclick={link.callback(|_| Msg::Cancel)}>
-                        { "End" }
-                    </button>
-                    if self.is_running {
-                        <button type="button" class="btn btn-warning m-1" onclick={link.callback(|_| Msg::Pause)}>
-                            { "Pause" }
-                        </button>
-                        // If game is not running and there is a current card show resume button
-                    } else if self.current_card.is_some() {
-                        <button type="button" class="btn btn-warning m-1" onclick={link.callback(|_| Msg::Resume)}>
-                            { "Resume" }
-                        </button>
-                    }
+            <div class="container">
+                <div class="row header-row">
+                    <div class="col header">
+                        // title
+                        <span>
+                            <img src="imgs/assets/header.svg" alt="Juguemos Loteria Titulo" />
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <div class="container text-left">
-                <div class="prize-list">
-                    <h2>{ "Prizes" }</h2>
-                    { for self.winners.iter().enumerate().map(|(index, prize)| {
-                        let index_clone = index;
-                        html! {
-                            <div class="prize-entry">
-                                <span>{ &prize.prize }</span>
-                                <input
-                                    type="text"
-                                    placeholder="Enter winner's name"
-                                    value={prize.name.clone()}
-                                    oninput={link.callback(move |e: InputEvent| {
-                                        let input: HtmlInputElement = e.target_unchecked_into();
-                                        Msg::AddWinner(index_clone, input.value())
-                                    })}
-                                />
-                            </div>
-                        }
-                    }) }
+                <div class="row">
+                    <div class="col-2">
+                        // prizes
+                        <div class="prize-list">
+                            // <h2 class="prizes-header">{ "Premios" }</h2>
+                            { for self.winners.iter().enumerate().map(|(index, prize)| {
+                                let index_clone = index;
+                                html! {
+                                    <div class="prize-entry">
+                                        <img src="imgs/assets/trophy.svg" alt="Trofeo" />
+                                        <span class="prize">{ &prize.prize }</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter winner's name"
+                                            value={prize.name.clone()}
+                                            oninput={link.callback(move |e: InputEvent| {
+                                                let input: HtmlInputElement = e.target_unchecked_into();
+                                                Msg::AddWinner(index_clone, input.value())
+                                            })}
+                                        />
+                                    </div>
+                                }
+                            }) }
+                        </div>
+                    </div>
+                    <div class="col cards-section">
+                        <div class="row">
+                            <span>
+                                // render card
+                                { self.render_card() }
+                            </span>
+                        </div>
+                        <div class="row buttons">
+                            // play buttons menu
+                            <button type="button" class="btn btn-primary m-1 col" onclick={link.callback(|_| Msg::Start)} disabled={self.is_running}>
+                                { "Start" }
+                            </button>
+                            <button type="button" class="btn btn-danger m-1 col" onclick={link.callback(|_| Msg::Cancel)}>
+                                { "End" }
+                            </button>
+                            if self.is_running {
+                                <button type="button" class="btn btn-warning m-1 col" onclick={link.callback(|_| Msg::Pause)}>
+                                    { "Pause" }
+                                </button>
+                                // If game is not running and there is a current card show resume button
+                            } else if self.current_card.is_some() {
+                                <button type="button" class="btn btn-warning m-1 col" onclick={link.callback(|_| Msg::Resume)}>
+                                    { "Resume" }
+                                </button>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col">
+                        // play buttons
+
+                    </div>
+                    <div class="col">
+                        <p> { self.remaining_time } </p>
+                    </div>
                 </div>
             </div>
             </>
@@ -187,13 +209,13 @@ impl Game {
                 
                 html! {
                     <div>
-                        <p>{ "Card Name: " }{ &card.name }</p>
-                        <p>{ "Image Source: " }{ &img_src }</p>
+                        // <p>{ "Card Name: " }{ &card.name }</p>
+                        // <p>{ "Image Source: " }{ &img_src }</p>
                         
                         <img 
                             src={img_src.clone()} 
                             alt={card.name.clone()}
-                            style="border: 2px solid red; min-width: 100px; min-height: 100px;"
+                            class="rendered-card"
                             onload={Callback::from(|_| {
                                 web_sys::console::log_1(&"Image loaded successfully".into());
                             })}
